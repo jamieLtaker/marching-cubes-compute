@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://dufcsdv6o1tqu"
+path="res://.godot/imported/marching.glsl-e0465bef6d03dc7ed57628da6ae2a61c.res"
+
+[deps]
+
+source_file="res://script/shader/marching.glsl"
+dest_files=["res://.godot/imported/marching.glsl-e0465bef6d03dc7ed57628da6ae2a61c.res"]
+
+[params]
+

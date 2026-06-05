@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://c3h3qxn2cf66j"]
+
+[ext_resource type="Script" uid="uid://b3f0vycl7rxt1" path="res://game.gd" id="1_e2o6t"]
+[ext_resource type="PackedScene" uid="uid://dli77ixknyw3n" path="res://player.tscn" id="2_e2o6t"]
+
+[sub_resource type="Environment" id="Environment_e2o6t"]
+background_mode = 1
+background_color = Color(0, 0, 1, 1)
+
+[node name="Game" type="Node3D"]
+script = ExtResource("1_e2o6t")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.54245913, 0.31404805, -0.779174, -0.24756357, 0.8265506, 0.5054964, 0.80277663, 0.4671061, -0.37062287, 0, 0, 0)
+light_energy = 2.0
+
+[node name="CharacterBody3D" parent="." instance=ExtResource("2_e2o6t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 19.793922, 4)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_e2o6t")

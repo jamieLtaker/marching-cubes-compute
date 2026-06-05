@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://c3h3qxn2cf66j"]
+
+[ext_resource type="Script" uid="uid://b3f0vycl7rxt1" path="res://script/terrain_manager.gd" id="1_feb5d"]
+
+[sub_resource type="Environment" id="Environment_e2o6t"]
+background_color = Color(0, 0, 1, 1)
+
+[node name="Game" type="Node3D" unique_id=676828720]
+script = ExtResource("1_feb5d")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1137963098]
+transform = Transform3D(-0.54245913, 0.31404805, -0.779174, -0.24756357, 0.8265506, 0.5054964, 0.80277663, 0.4671061, -0.37062287, 0, 0, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=635743691]
+environment = SubResource("Environment_e2o6t")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1090528395]
+transform = Transform3D(1, 0, 0, 0, 0.7765635, 0.63003904, 0, -0.63003904, 0.7765635, 0, 32.33624, 42.020184)

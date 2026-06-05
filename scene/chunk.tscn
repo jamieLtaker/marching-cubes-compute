@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://370ceeldmlsp"]
+
+[ext_resource type="Script" uid="uid://c4na0vxdroodw" path="res://script/chunk.gd" id="1_375yt"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_375yt"]
+frequency = 0.0173
+
+[node name="ComputeChunk" type="StaticBody3D" unique_id=596700568]
+script = ExtResource("1_375yt")
+noise = SubResource("FastNoiseLite_375yt")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1816483778]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1492085787]
