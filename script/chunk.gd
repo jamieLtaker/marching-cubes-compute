@@ -1,6 +1,5 @@
 extends StaticBody3D
 
-@export var noise:FastNoiseLite = null
 @export var chunkCoord := Vector3i.ZERO;
 
 var vertices := PackedVector3Array()

@@ -23,21 +23,23 @@ func load_shader(path: String) -> RID:
 	var shader_spirv: RDShaderSPIRV = shader_file_data.get_spirv()
 	return rd.shader_create_from_spirv(shader_spirv)
 
-func EasyCompute(shader, arrays:Array) -> void:
-	
-	var byteArrays = []
-	var storageBuffers = []
-	var uniforms = []
-	
-	byteArrays.resize(arrays.size())
-	storageBuffers.resize(arrays.size())
-	uniforms.resize(arrays.size())
-	
-	for i in range(0, arrays.size()):
-		var array = arrays[i]
-		
-		var bytes:PackedByteArray = array.to_byte_array()
-		var buffer := rd.storage_buffer_create(bytes.size(), bytes)
+
+# unfinished
+#func EasyCompute(shader, arrays:Array) -> void:
+#	
+#	var byteArrays = []
+#	var storageBuffers = []
+#	var uniforms = []
+#	
+#	byteArrays.resize(arrays.size())
+#	storageBuffers.resize(arrays.size())
+#	uniforms.resize(arrays.size())
+#	
+#	for i in range(0, arrays.size()):
+#		var array = arrays[i]
+#		
+#		var bytes:PackedByteArray = array.to_byte_array()
+#		var buffer := rd.storage_buffer_create(bytes.size(), bytes)
 
 var TriangleTable := PackedInt32Array([
 
