@@ -27,16 +27,6 @@ func PrepareArrays() -> void:
 	triangles.resize(MAX_VERTS)
 	normals.resize(MAX_VERTS)
 	
-	
-
-func CPUComputeDensities()->void:
-	for x in range(0, CHUNK_WIDTH + 1):
-		for y in range(0, CHUNK_WIDTH + 1):
-			for z in range(0, CHUNK_WIDTH + 1):
-				var i:int = z + y * (CHUNK_WIDTH + 1) + x * (CHUNK_WIDTH + 1) * (CHUNK_WIDTH + 1)
-				var coord = Vector3(chunkCoord) * CHUNK_WIDTH + Vector3(x, y, z) + Vector3(0.1, 0.1, 0.1)
-				densities[i] = noise.get_noise_3d(coord.x, coord.y, coord.z) + 0.5
-
 func ComputeDensities() -> void:
 	densities.resize((CHUNK_WIDTH + 1) * (CHUNK_WIDTH + 1) * (CHUNK_WIDTH + 1))
 	var densitiesBytes = densities.to_byte_array()
