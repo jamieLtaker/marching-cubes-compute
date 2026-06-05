@@ -21,19 +21,6 @@ func uniformFromRid(rid:RID, binding:int, uniformType) -> RDUniform:
 	uniform.binding = binding
 	uniform.add_id(rid)
 	return uniform
-	
-func imageFormatToRenderingDeviceFormat(imageFormat:int) -> int:
-	const dict = {
-		Image.Format.FORMAT_L8: RenderingDevice.DATA_FORMAT_R8_UNORM,
-		Image.Format.FORMAT_RGBA8: RenderingDevice.DATA_FORMAT_R8G8B8A8_UNORM,
-		Image.Format.FORMAT_RGB8: RenderingDevice.DATA_FORMAT_R8G8B8_UNORM,
-		Image.FORMAT_R8: RenderingDevice.DATA_FORMAT_R8_UNORM
-		#Image.Format.FORMAT_DXT1: RenderingDevice.DATA_FORMAT_R8G8B8A8_UNORM
-	}
-	if (imageFormat == Image.Format.FORMAT_DXT1):
-		push_error("Should not be compressed")
-	
-	return dict[imageFormat]
 
 func PrepareArrays() -> void:
 	vertices.resize(MAX_VERTS)
@@ -84,7 +71,7 @@ func ComputeDensities() -> void:
 	
 	
 
-func ComputeMarchingCubes(smoothShaded:bool) -> void:
+func ComputeMarchingCubes() -> void:
 	var verticesBytes = vertices.to_byte_array()
 	var verticesBuffer := rd.storage_buffer_create(verticesBytes.size(), verticesBytes)
 	var verticesUniform = uniformFromRid(verticesBuffer, 0, RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER)
@@ -101,6 +88,8 @@ func ComputeMarchingCubes(smoothShaded:bool) -> void:
 	var normalsBuffer := rd.storage_buffer_create(normalsBytes.size(), normalsBytes)
 	var normalsUniform = uniformFromRid(normalsBuffer, 4, RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER)
 	
+	# you need to pass these because storing it as a constant array in the shader makes
+	# it take a long time to sample
 	var triangleTableBytes = ComputeHelper.TriangleTable.to_byte_array()
 	var triangleTableBuffer = rd.storage_buffer_create(triangleTableBytes.size(), triangleTableBytes)
 	var triangleTableUniform = uniformFromRid(triangleTableBuffer, 5, RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER)
@@ -143,10 +132,14 @@ func ComputeMarchingCubes(smoothShaded:bool) -> void:
 	trianglesBytes = trianglesBytes.slice(0, numTriangles * 4 * 4)
 	normalsBytes = normalsBytes.slice(0, numVertices * 4 * 4)
 	
+	# This is formatted specifically to make a quick conversion from vector4 array to vector3 array
+	# This is because for complicated reasons the shader will only output vector3s with the size
+	# of a vector4, so this is my fix for that
 	vertices = PackedVector3Array(Array(verticesBytes.to_vector4_array()))
 	triangles = trianglesBytes.to_int32_array()
 	normals = PackedVector3Array(Array(normalsBytes.to_vector4_array()))
 	
+	# hopefully I didn't miss any
 	rd.free_rid(verticesBuffer)
 	rd.free_rid(trianglesBuffer)
 	rd.free_rid(normalsBuffer)
@@ -173,12 +166,14 @@ func BuildMesh()->void:
 	$CollisionShape3D.shape = trimesh
 
 func buildCollisionMesh() -> void:
+	# this only works if its flat shaded, in which case the vertex array will be in the 
+	# trimesh format used for the concave polygon.
 	trimesh = ConcavePolygonShape3D.new()
 	trimesh.set_faces(vertices)
 
 func updateChunk() -> void:
 	PrepareArrays()
-	ComputeMarchingCubes(true)
+	ComputeMarchingCubes()
 	BuildMesh()
 
 func _ready() -> void:
@@ -192,6 +187,3 @@ func _ready() -> void:
 	
 	var endTime = Time.get_ticks_usec()
 	print("Compute chunk time: " + str((endTime - beginTime) / 1000.0) + "ms")
-	
-	#note: need to free RIDs
-	

@@ -353,15 +353,13 @@ bool fuzzyeq(vec3 a, vec3 b) {
 }
 
 // https://stackoverflow.com/questions/63315810/is-there-an-efficient-way-to-append-values-in-an-ssb-in-a-compute-shader-with-gl
-int verticesAdded = 0;
 int VertForIndice(vec3 vertex){
-	// uncomment to smooth shade
+	// comment out this for loop to flat shade
 	for (int i = 0; i < params.numberOfVertices; i++) {
 		if (fuzzyeq(my_data_buffer.vertices[i], vertex)) {
 			return i;
 		}
 	}
-	verticesAdded++;
 	int index = int(atomicAdd(params.numberOfVertices, 1));
 	my_data_buffer.vertices[index] = vertex;
 	return index;
@@ -430,7 +428,6 @@ void MarchCube(ivec3 _position) {
 			}
 		}
 		
-		verticesAdded = 0;
 	}
 	
 }

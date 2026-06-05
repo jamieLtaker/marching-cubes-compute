@@ -1,5 +1,9 @@
 extends StaticBody3D
 
+# BIG NOTE
+# this is not really used for anything anymore
+# but i kept it in case it's helpful to steal code from its rotting corpse like a vulture
+
 @export var noiseidk:FastNoiseLite
 
 @export var chunkCoord:Vector3i
